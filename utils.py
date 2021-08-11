@@ -42,7 +42,8 @@ help_render_dict = {
     "ADDRESS_P2P_TO_AGG2": "{REQUIRED} Address from router to second aggregator AGG2",
     "AGG1_HOSTNAME": "{REQUIRED} AGG1 Aggregation router hostname",
     "AGG2_HOSTNAME": "{REQUIRED} AGG2 Aggregation router hostname",
-    "AGG1_LOOPBACK0": "[OPTIONAL] AGG1 Loopback0 IPv4 Address without mask. If not filled it's derived from management IP address",
+    "AGG1_LOOPBACK0": "[OPTIONAL] AGG1 Loopback0 IPv4 Address without mask. If not filled it's derived from "
+                      "management IP address",
     "AGG2_LOOPBACK0": "[OPTIONAL] AGG2 Loopback0 IPv4 Address without mask. If not filled it's derived from management IP address",
     "AGG1_LOOPBACK_MANAGEMENT": "{REQUIRED} AGG1 router management IPv4 interface address",
     "AGG2_LOOPBACK_MANAGEMENT": "{REQUIRED} AGG2 router management IPv4 interface address",
@@ -101,40 +102,40 @@ netsim_asr920_schema = Schema(
     {
         "ADDRESS_P2P_TO_AGG1": str,
         "ADDRESS_P2P_TO_AGG2": str,
-        "AGG1_HOSTNAME": Regex("[\w\d]{10,30}"),
-        "AGG2_HOSTNAME": Regex("[\w\d]{10,30}"),
-        Optional("AGG1_LOOPBACK0"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        Optional("AGG2_LOOPBACK0"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "AGG1_LOOPBACK_MANAGEMENT": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "AGG2_LOOPBACK_MANAGEMENT": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "AGG1_HOSTNAME": Regex(r"[\w\d]{10,30}"),
+        "AGG2_HOSTNAME": Regex(r"[\w\d]{10,30}"),
+        Optional("AGG1_LOOPBACK0"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("AGG2_LOOPBACK0"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "AGG1_LOOPBACK_MANAGEMENT": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "AGG2_LOOPBACK_MANAGEMENT": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
         "AGG1_PORT": str,
         "AGG2_PORT": str,
-        Optional("AGGREGATION_RING"): Regex("\d{1,2}"),
+        Optional("AGGREGATION_RING"): Regex(r"\d{1,2}"),
         Optional("BLUEDOMAIN"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
         Optional("BORDER_REGION"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
         Optional("BUNDLE_UPLINK"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
-        Optional("CITY_CODE"): Regex("\d{2,4}"),
-        Optional("DALIA"):  Regex("[\d\:]+"),
-        "HOSTNAME": Regex("[\w\d]{10,30}"),
-        "INTERFACE_TO_AGG1": Regex("(Ten|Gig)\d\/\d\/\d"),
-        "INTERFACE_TO_AGG2": Regex("(Ten|Gig)\d\/\d\/\d"),
-        Optional("INTERFACE_TO_AGG1_MTU"): Regex("\d{4}"),
-        Optional("INTERFACE_TO_AGG2_MTU"): Regex("\d{4}"),
-        "ISE_SERVER1": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "ISE_SERVER2": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "ISE_SERVER3": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "LOOPBACK0": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "LOOPBACK_MANAGEMENT":  Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("CITY_CODE"): Regex(r"\d{2,4}"),
+        Optional("DALIA"):  Regex(r"[\d\:]+"),
+        "HOSTNAME": Regex(r"[\w\d]{10,30}"),
+        "INTERFACE_TO_AGG1": Regex(r"(Ten|Gig)\d\/\d\/\d"),
+        "INTERFACE_TO_AGG2": Regex(r"(Ten|Gig)\d\/\d\/\d"),
+        Optional("INTERFACE_TO_AGG1_MTU"): Regex(r"\d{4}"),
+        Optional("INTERFACE_TO_AGG2_MTU"): Regex(r"\d{4}"),
+        "ISE_SERVER1": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "ISE_SERVER2": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "ISE_SERVER3": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "LOOPBACK0": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "LOOPBACK_MANAGEMENT":  Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
         Optional("MODEL"): "ASR920-12CZ-D",
         "NETID": str,
-        Optional("NTP_SERVER1"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        Optional("NTP_SERVER2"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        Optional("NTP_SERVER3"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("NTP_SERVER1"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("NTP_SERVER2"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("NTP_SERVER3"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
         Optional("REDDOMAIN"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
         Optional("REGION"): Regex("[1-9]"),
         "SNMP_LOCATION": str,
         Optional("STATE"): str,
-        Optional("X2"): Regex("\d{2}"),
+        Optional("X2"): Regex(r"\d{2}"),
     }
 )
 
@@ -144,40 +145,40 @@ netsim_ncs560_schema = Schema(
         "ADDRESS_P2P_TO_AGG2": str,
         Optional("ADDRESS_P2P_TO_TEF1"): str,
         Optional("ADDRESS_P2P_TO_TEF2"): str,
-        "AGG1_HOSTNAME": Regex("[\w\d]{10,30}"),
-        "AGG2_HOSTNAME": Regex("[\w\d]{10,30}"),
-        Optional("AGG1_LOOPBACK0"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        Optional("AGG2_LOOPBACK0"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "AGG1_LOOPBACK_MANAGEMENT": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "AGG2_LOOPBACK_MANAGEMENT": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "AGG1_PORT": Or(Regex("\d{1,2}\/[1-2]\/\d{1,2}"), Regex("\w+(\d\/)+\d"), error="Aggregation AGG1 port format is incorrect"),
-        "AGG2_PORT": Or(Regex("\d{1,2}\/[1-2]\/\d{1,2}"), Regex("\w+(\d\/)+\d"), error="Aggregation AGG2 port format is incorrect"),
-        Optional("AGGREGATION_RING"): Regex("\d{1,2}"),
+        "AGG1_HOSTNAME": Regex(r"[\w\d]{10,30}"),
+        "AGG2_HOSTNAME": Regex(r"[\w\d]{10,30}"),
+        Optional("AGG1_LOOPBACK0"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("AGG2_LOOPBACK0"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "AGG1_LOOPBACK_MANAGEMENT": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "AGG2_LOOPBACK_MANAGEMENT": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "AGG1_PORT": Or(Regex(r"\d{1,2}\/[1-2]\/\d{1,2}"), Regex(r"\w+(\d\/)+\d"), error="Aggregation AGG1 port format is incorrect"),
+        "AGG2_PORT": Or(Regex(r"\d{1,2}\/[1-2]\/\d{1,2}"), Regex(r"\w+(\d\/)+\d"), error="Aggregation AGG2 port format is incorrect"),
+        Optional("AGGREGATION_RING"): Regex(r"\d{1,2}"),
         Optional("BLUEDOMAIN"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
         Optional("BUNDLE_UPLINK"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
-        Optional("CITY_CODE"): Regex("\d{2,4}"), # TODO validation or completion
-        Optional("DALIA"): Regex("[\d\:]+"),
-        "HOSTNAME": Regex("[\w\d]{10,30}"),
-        "INTERFACE_TO_AGG1": Regex("(Ten|Gig)\d\/\d\/\d\/\d"),
-        "INTERFACE_TO_AGG2": Regex("(Ten|Gig)\d\/\d\/\d\/\d"),
-        Optional("INTERFACE_TO_AGG1_MTU"): Regex("\d{4}"),
-        Optional("INTERFACE_TO_AGG2_MTU"): Regex("\d{4}"),
-        Optional("INTERFACE_TO_TEF1"): Regex("(Ten|Gig)\d\/\d\/\d\/\d"),
-        Optional("INTERFACE_TO_TEF2"): Regex("(Ten|Gig)\d\/\d\/\d\/\d"),
-        "ISE_SERVER1": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "ISE_SERVER2": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "ISE_SERVER3": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "LOOPBACK0": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "LOOPBACK_MANAGEMENT":  Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("CITY_CODE"): Regex(r"\d{2,4}"),  # TODO validation or completion
+        Optional("DALIA"): Regex(r"[\d\:]+"),
+        "HOSTNAME": Regex(r"[\w\d]{10,30}"),
+        "INTERFACE_TO_AGG1": Regex(r"(Ten|Gig)\d\/\d\/\d\/\d"),
+        "INTERFACE_TO_AGG2": Regex(r"(Ten|Gig)\d\/\d\/\d\/\d"),
+        Optional("INTERFACE_TO_AGG1_MTU"): Regex(r"\d{4}"),
+        Optional("INTERFACE_TO_AGG2_MTU"): Regex(r"\d{4}"),
+        Optional("INTERFACE_TO_TEF1"): Regex(r"(Ten|Gig)\d\/\d\/\d\/\d"),
+        Optional("INTERFACE_TO_TEF2"): Regex(r"(Ten|Gig)\d\/\d\/\d\/\d"),
+        "ISE_SERVER1": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "ISE_SERVER2": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "ISE_SERVER3": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "LOOPBACK0": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "LOOPBACK_MANAGEMENT":  Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
         "NETID": str,
-        Optional("NTP_SERVER1"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        Optional("NTP_SERVER2"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        Optional("NTP_SERVER3"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("NTP_SERVER1"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("NTP_SERVER2"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("NTP_SERVER3"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
         Optional("PDC_DALIA"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
         Optional("REDDOMAIN"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
         Optional("REGION"): Regex("[1-9]"),
         "SNMP_LOCATION": str,
-        Optional("X2"): Regex("\d{2}"),
+        Optional("X2"): Regex(r"\d{2}"),
     }
 )
 
@@ -186,32 +187,32 @@ ipbh_ncs540_schema = Schema(
         Optional("ADDRESS_P2P_TO_GPON"): str,
         "ADDRESS_P2P_TO_UPLINK1": str,
         "ADDRESS_P2P_TO_UPLINK2": str,
-        "AGG1_HOSTNAME": Regex("[\w\d]{10,30}"),
-        "AGG2_HOSTNAME": Regex("[\w\d]{10,30}"),
-        "AGG1_LOOPBACK0": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "AGG2_LOOPBACK0": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "AGG1_LOOPBACK_MANAGEMENT": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "AGG2_LOOPBACK_MANAGEMENT": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        Optional("AGGREGATION_RING"): Regex("\d{1,2}"),
+        "AGG1_HOSTNAME": Regex(r"[\w\d]{10,30}"),
+        "AGG2_HOSTNAME": Regex(r"[\w\d]{10,30}"),
+        "AGG1_LOOPBACK0": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "AGG2_LOOPBACK0": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "AGG1_LOOPBACK_MANAGEMENT": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "AGG2_LOOPBACK_MANAGEMENT": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("AGGREGATION_RING"): Regex(r"\d{1,2}"),
         Optional("BLUEDOMAIN"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
-        "CITY_CODE": Regex("\d{2,4}"),
+        "CITY_CODE": Regex(r"\d{2,4}"),
         Optional("DALIA"): str,
         Optional("GPON_REMOTE_ROUTER_HOSTNAME"): str,
         Optional("GPON_REMOTE_ROUTER_PORT"): str,
-        "HOSTNAME": Regex("[\w\d]{10,30}"),
+        "HOSTNAME": Regex(r"[\w\d]{10,30}"),
         Optional("INTERFACE_TO_GPON"): str,
-        "INTERFACE_TO_UPLINK1": Regex("(Ten|Gig)\d\/\d\/\d"),
-        "INTERFACE_TO_UPLINK2": Regex("(Ten|Gig)\d\/\d\/\d"),
-        "ISE_SERVER1": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "ISE_SERVER2": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "ISE_SERVER3": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "LOOPBACK0": Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        "LOOPBACK_MANAGEMENT":  Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "INTERFACE_TO_UPLINK1": Regex(r"(Ten|Gig)\d\/\d\/\d"),
+        "INTERFACE_TO_UPLINK2": Regex(r"(Ten|Gig)\d\/\d\/\d"),
+        "ISE_SERVER1": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "ISE_SERVER2": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "ISE_SERVER3": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "LOOPBACK0": Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        "LOOPBACK_MANAGEMENT":  Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
         "NETID": str,
-        Optional("NTP_SERVER1"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
-        Optional("NTP_SERVER2"): Regex("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("NTP_SERVER1"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
+        Optional("NTP_SERVER2"): Regex(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"),
         Optional("REDDOMAIN"): And(Use(lambda x: True if x == "True" or x == "1" else False)),
-        Optional("REGION"): Regex("[1-9]"),
+        Optional("REGION"): Regex(r"[1-9]"),
         "SNMP_LOCATION": str,
         "UPLINK1_HOSTNAME": str,
         "UPLINK2_HOSTNAME": str,
@@ -222,7 +223,8 @@ ipbh_ncs540_schema = Schema(
     }
 )
 
-def load_settings()-> dict:
+
+def load_settings() -> dict:
     settings_path = Path("settings.json")
     settings_dict = dict(default_settings)
 
@@ -237,8 +239,8 @@ def load_settings()-> dict:
 
     try:
         settings_dict = json.load(file)
-    except ValueError as e:
-        sg.popup_quick_message("Invalid settings file. Recreating it")
+    except ValueError:
+        # sg.popup_quick_message("Invalid settings file. Recreating it")
         # default values are loaded into settings_dict
         settings_dict = dict(default_settings)
         file = settings_path.open("w", encoding="utf-8")
@@ -252,13 +254,11 @@ def load_settings()-> dict:
 
     return settings_dict
 
-def save_settings(settings:str)->None:
-    pass
 
-def load_golden(golden_type:str) -> str:
+def load_golden(golden_type: str) -> str:
     """
     Reads a jinja2.Template file and gets all variables expected for that file
-    :param golden_name: Value for the jinja2.Template  file to be used
+    :param golden_type: Value for the jinja2.Template  file to be used
     :return: a string of all jinja2 variables containing that template, separated by LINESEP
     """
     filename = golden_type + ".j2.golden"
@@ -271,7 +271,8 @@ def load_golden(golden_type:str) -> str:
     vars_str = LINESEP.join([x + SEPARATOR for x in vars_list])
     return vars_str
 
-def generate_goldendict(input_str : str) -> dict:
+
+def generate_goldendict(input_str: str) -> dict:
     goldenvars_dict = dict()
     for line in input_str.split("\n"):
         line_vars = line.split("\t")
@@ -283,23 +284,24 @@ def generate_goldendict(input_str : str) -> dict:
     return goldenvars_dict
 
 
-def generate_golden(golden_type:str, render_dict:dict) -> str:
+def generate_golden(golden_type: str, render_dict: dict) -> str:
     if golden_type in GOLDEN_TYPES:
         template = env.get_template(golden_type+".j2.golden")
         golden_text = template.render(**render_dict)
         return golden_text
 
 
-def render_vars_default_help(vars: str) -> dict:
+def render_vars_default_help(vars_default: str) -> dict:
     result_str = ""
-    for line in vars.split("\n"):
+    for line in vars_default.split("\n"):
         line_vars = line.split("\t")
-        if len(line_vars) == 1 or (len(line_vars)==2 and line_vars[1]==""):
+        if len(line_vars) == 1 or (len(line_vars) == 2 and line_vars[1] == ""):
             line_var = "{}{}{}\n".format(line_vars[0], SEPARATOR, help_render_dict.get(line_vars[0].strip()))
             result_str += line_var
     return result_str
 
-def validate_golden_dict(golden_type:str, golden_dict: dict)-> str:
+
+def validate_golden_dict(golden_type: str, golden_dict: dict) -> str:
     golden_schema = None
     if golden_type in GOLDEN_TYPES:
         if golden_type == "NETSIMP_ASR920":
@@ -316,7 +318,8 @@ def validate_golden_dict(golden_type:str, golden_dict: dict)-> str:
         print(e)
         return e
 
-def retrieve(golden_file:str, settings:dict) -> tuple:
+
+def retrieve(golden_file: str, settings: dict) -> tuple:
     g = github.Github(base_url=settings.get("github_base"), login_or_token=settings.get("token"))
     try:
         repository = g.get_repo(full_name_or_id=settings.get("repository"))
@@ -332,7 +335,8 @@ def retrieve(golden_file:str, settings:dict) -> tuple:
     hash_str = "sha {} size {}".format(content.sha, content.size)
     return golden_text, hash_str, None
 
-def remove_blanks(golden_text:str) -> str:
+
+def remove_blanks(golden_text: str) -> str:
     text = LINESEP
     for line in golden_text.splitlines():
         if line.strip() == "":
@@ -341,7 +345,8 @@ def remove_blanks(golden_text:str) -> str:
             text += "\n{}".format(line.rstrip())
     return text
 
-def complete_mop_dict(golden_type:str, mop_dict:dict) -> dict:
+
+def complete_mop_dict(golden_type: str, mop_dict: dict) -> dict:
     if "NETSIMP_NCS560" in golden_type:
         mop_dict["DEVICE"] = "NCS560"
         mop_dict["IMAGEN"] = "7.1.2"
@@ -366,7 +371,7 @@ def complete_mop_dict(golden_type:str, mop_dict:dict) -> dict:
         mop_dict["CODE_CHECKPOINT"] = "./templates/checkpoint_NCS540.txt"
         mop_dict["CODE_INTERFACES"] = "./templates/interfaces_NCS540.txt"
 
-    mop_dict["DATE"] = datetime.datetime.strftime( datetime.datetime.now(), "%d-%m-%Y")
+    mop_dict["DATE"] = datetime.datetime.strftime(datetime.datetime.now(), "%d-%m-%Y")
     datetime.datetime.now()
     if mop_dict.get("ADDRESS_P2P_TO_AGG1"):
         mop_dict["AGG1_P2P"] = str(ipaddress.ip_interface(mop_dict["ADDRESS_P2P_TO_AGG1"]) - 1)[:-3]
@@ -375,7 +380,8 @@ def complete_mop_dict(golden_type:str, mop_dict:dict) -> dict:
 
     return mop_dict
 
-def complete_mop_dict_code(mop_dict:dict) -> dict:
+
+def complete_mop_dict_code(mop_dict: dict) -> dict:
     if mop_dict.get("PREMW_CODE_TRANSPORT"):
         if Path(mop_dict.get("PREMW_CODE_TRANSPORT")).is_file():
             postmw_code = Path(mop_dict.get("PREMW_CODE_TRANSPORT")).read_text(encoding="utf-8")
@@ -393,7 +399,8 @@ def complete_mop_dict_code(mop_dict:dict) -> dict:
 
     return mop_dict
 
-def complete_golden_dict(golden_type:str, golden_dict: dict)-> dict:
+
+def complete_golden_dict(golden_type: str, golden_dict: dict) -> dict:
 
     # STATE, REGION, TIMEZONE
     if golden_dict.get("STATE") is None:
@@ -431,21 +438,24 @@ def complete_golden_dict(golden_type:str, golden_dict: dict)-> dict:
         golden_dict["X2"] = "65000:1002{}{}".format(golden_dict.get("REGION").strip(), golden_dict.get("X2").strip())
     return golden_dict
 
-def _get_state(golden_dict:dict) -> str:
+
+def _get_state(golden_dict: dict) -> str:
     if golden_dict.get("STATE") is None:
         state, city, sitename = golden_dict.get("SNMP_LOCATION").split(",")
         state = state.upper()
         return state.strip()
     return "<STATE NOT FOUND>"
 
-def _get_sitename(golden_dict:dict) -> str:
+
+def _get_sitename(golden_dict: dict) -> str:
     if golden_dict.get("SITENAME") is None:
         state, city, sitename = golden_dict.get("SNMP_LOCATION").split(",")
         sitename = sitename.upper()
         return sitename.strip()
     return "<SITENAME NOT FOUND>"
 
-def _get_region(golden_dict:dict) -> str:
+
+def _get_region(golden_dict: dict) -> str:
     if golden_dict.get("STATE") is None:
         if golden_dict.get("SNMP_LOCATION") is None:
             return "<REGION NOT FOUND>"
@@ -462,7 +472,8 @@ def _get_region(golden_dict:dict) -> str:
             return "<REGION NOT FOUND>"
     return region
 
-def _get_timezoneXE(golden_dict:dict) -> str:
+
+def _get_timezoneXE(golden_dict: dict) -> str:
     unknown = "<UNKNOWN TIMEZONE>"
     if golden_dict.get("STATE") is None and golden_dict.get("SNMP_LOCATION") is None:
         return unknown
@@ -479,7 +490,8 @@ def _get_timezoneXE(golden_dict:dict) -> str:
         return timezone
     return unknown
 
-def _get_timezoneXR(golden_dict:dict) -> str:
+
+def _get_timezoneXR(golden_dict: dict) -> str:
     if golden_dict.get("STATE") is None and golden_dict.get("SNMP_LOCATION") is None:
         return "<UNKNOWN TIMEZONE>"
     if golden_dict.get("STATE"):
@@ -493,7 +505,8 @@ def _get_timezoneXR(golden_dict:dict) -> str:
         return integration_yaml.get("TIMEZONE").get(state.lower())
     return "<UNKNOWN TIMEZONE>"
 
-def _get_lte_x2(golden_dict:dict) -> str:
+
+def _get_lte_x2(golden_dict: dict) -> str:
     if golden_dict.get("SNMP_LOCATION"):
         state, city, sitename = golden_dict.get("SNMP_LOCATION").split(",")
         city = city.strip().lower()
@@ -504,33 +517,30 @@ def _get_lte_x2(golden_dict:dict) -> str:
             return "65000:1002{}{}".format(golden_dict.get("REGION"), x2_city_code)
     return "65000:1002R<UNKOWN X2 CITY CODE>"
 
-def _get_bluedomain(golden_dict:dict) -> bool:
+
+def _get_bluedomain(golden_dict: dict) -> bool:
     blue_domain_network = ipaddress.ip_network(integration_yaml.get("BLUE_DOMAIN_MGMT_SUBNET"))
-    if ipaddress.ip_interface( golden_dict.get("AGG1_LOOPBACK_MANAGEMENT") ) in blue_domain_network or ipaddress.ip_interface(golden_dict.get("AGG2_LOOPBACK_MANAGEMENT")) in blue_domain_network:
+    if ipaddress.ip_interface(golden_dict.get("AGG1_LOOPBACK_MANAGEMENT")) in blue_domain_network or ipaddress.ip_interface(golden_dict.get("AGG2_LOOPBACK_MANAGEMENT")) in blue_domain_network:
         return True
     return False
 
-def _get_reddomain(golden_dict:dict) -> bool:
+
+def _get_reddomain(golden_dict: dict) -> bool:
     red_domain_network = ipaddress.ip_network(integration_yaml.get("RED_DOMAIN_MGMT_SUBNET"))
-    if ipaddress.ip_interface( golden_dict.get("AGG1_LOOPBACK_MANAGEMENT") ) in red_domain_network or ipaddress.ip_interface(golden_dict.get("AGG2_LOOPBACK_MANAGEMENT")) in red_domain_network:
+    if ipaddress.ip_interface(golden_dict.get("AGG1_LOOPBACK_MANAGEMENT")) in red_domain_network or ipaddress.ip_interface(golden_dict.get("AGG2_LOOPBACK_MANAGEMENT")) in red_domain_network:
         return True
     return False
+
 
 def dict_to_text(in_dict: dict) -> str:
     text = ""
     for k, v in in_dict.items():
-        text += "{}:{}\n".format(k,v)
+        text += "{}:{}\n".format(k, v)
 
     return text
 
-def set_to_text(in_set: set) -> str:
-    text = ""
-    for k in in_set:
-        text += "{}:\n".format(k)
 
-    return text
-
-def text_to_dict(in_text:str) -> dict:
+def text_to_dict(in_text: str) -> dict:
     return_dict = dict()
     for line in in_text.splitlines():
         try:
@@ -541,14 +551,16 @@ def text_to_dict(in_text:str) -> dict:
 
     return return_dict
 
-def save_settings(settings:dict) -> None:
+
+def save_settings(settings: dict) -> None:
     settings_path = Path("settings.json")
     with settings_path.open("w", encoding="utf-8") as file:
         json.dump(settings, file)
 
-def golden_with_secrets(golden_text:str, vars:dict) -> str:
+
+def golden_with_secrets(golden_text: str, vars: dict) -> str:
     for k, v in vars.items():
-        if not isinstance(v, (str)):
+        if not isinstance(v, (str,)):
             continue
         key = "<{}>".format(k)
         golden_text = golden_text.replace(key, v)

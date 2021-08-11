@@ -159,6 +159,7 @@ def open_generation(golden_text: str, fill_secrets: bool, golden_dict: dict):
 
     window_golden.close()
 
+
 def open_window_gettext() -> str:
     layout = [
         [sg.Multiline("", size=(100, 30), key="-TEXT-")],
@@ -181,6 +182,7 @@ def open_window_gettext() -> str:
 
     window_text.close()
     return text
+
 
 # Create the window
 window = sg.Window("Golden generator", layout, modal=True)
@@ -270,12 +272,12 @@ while True:
             window["-OUTPUT-"].update("File '{}' was not found".format(filename))
             continue
 
-        vars = list(document.get_merge_fields())
-        vars.sort()
+        field_values = list(document.get_merge_fields())
+        field_values.sort()
         document.close()
         if vars is None:
             continue
-        mop_dict = dict.fromkeys(vars, "")
+        mop_dict = dict.fromkeys(field_values, "")
         if golden_dict:
             for k in mop_dict.keys():
                 mop_dict[k] = golden_dict.get(k) or ""
