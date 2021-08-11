@@ -1,0 +1,627 @@
+---
+LTE_R9: |-
+ 65000:1002901  
+ 65000:1221500
+ 65000:1221700
+ 65000:1221800
+ 65000:1221900
+ 65000:1222400
+ 65000:1222900
+ 65000:1223900
+ 65000:1225900
+ 65000:1225400
+ 65000:1226100
+ 65000:1226400
+ 65000:1226500
+ 65000:1226800
+ 65000:1226900
+ 65000:1227400
+ 65000:1227900
+ 65000:1228900
+
+LTE_R8: |-
+ 65000:1002901
+ 65000:1221600
+ 65000:1221800
+ 65000:1221900
+ 65000:1222400
+ 65000:1222900
+ 65000:1223400
+ 65000:1223900
+ 65000:1224900
+ 65000:1226400
+ 65000:1226500
+ 65000:1226800
+ 65000:1226900
+ 65000:1227900
+ 65000:1228900
+
+LTE_R7: |-
+ 65000:1002701
+ 65000:1002901
+ 65000:1221700
+ 65000:1221900
+ 65000:1222400
+ 65000:1222900
+ 65000:1223900
+ 65000:1224900
+ 65000:1225400
+ 65000:1225900
+ 65000:1226100
+ 65000:1226400
+ 65000:1226500
+ 65000:1226700
+ 65000:1226800
+ 65000:1226900
+ 65000:1228900
+
+LTE_R6: |-
+ 65000:1002901
+ 65000:1221500
+ 65000:1221600
+ 65000:1221900
+ 65000:1222400
+ 65000:1222900
+ 65000:1223400
+ 65000:1223900
+ 65000:1224900
+ 65000:1225900
+ 65000:1226100
+ 65000:1226400
+ 65000:1226500
+ 65000:1226800
+ 65000:1226900
+ 65000:1228900
+
+LTE_R5: |-
+ 65000:1002901
+ 65000:1223900
+ 65000:1228900
+ 65000:1226900
+ 65000:1226400
+ 65000:1221900
+ 65000:1226500
+ 65000:1225900
+ 65000:1224900
+ 65000:1226800
+ 65000:1225400
+ 65000:1222500
+ 65000:1222400
+ 65000:1221500
+ 65000:1226100
+
+LTE_R4: |-
+ 65000:1221100
+ 65000:1221300
+ 65000:1221400
+ 65000:1221500
+ 65000:1221600
+ 65000:1221900
+ 65000:1222400
+ 65000:1222900
+ 65000:1223400
+ 65000:1223900
+ 65000:1224900
+ 65000:1226100
+ 65000:1226400
+ 65000:1226500
+ 65000:1226800
+ 65000:1226900
+ 65000:1227900
+ 65000:1228500
+ 65000:1228900
+
+LTE_R3: |-
+ 65000:1002901
+ 65000:1221100
+ 65000:1221300
+ 65000:1221400
+ 65000:1221500
+ 65000:1221600
+ 65000:1221900
+ 65000:1222400
+ 65000:1222900
+ 65000:1223400
+ 65000:1223900
+ 65000:1224900
+ 65000:1226100
+ 65000:1226400
+ 65000:1226500
+ 65000:1226800
+ 65000:1226900
+ 65000:1227900
+ 65000:1228500
+ 65000:1228900
+
+LTE_R2: |-
+ 65000:1002901
+ 65000:1221100
+ 65000:1221300
+ 65000:1221400
+ 65000:1221500
+ 65000:1221600
+ 65000:1221900
+ 65000:1222400
+ 65000:1222900
+ 65000:1223400
+ 65000:1223900
+ 65000:1224900
+ 65000:1226100
+ 65000:1226400
+ 65000:1226500
+ 65000:1226800
+ 65000:1226900
+ 65000:1227900
+ 65000:1228500
+ 65000:1228900
+ 65000:1223300
+ 65000:1223200
+ 65000:1226600
+ 65000:1226200
+ 
+LTE_R1: |-
+ 65000:1002901
+ 65000:1221100
+ 65000:1221300
+ 65000:1221400
+ 65000:1221500
+ 65000:1221600
+ 65000:1221900
+ 65000:1222400
+ 65000:1222900
+ 65000:1223400
+ 65000:1223900
+ 65000:1224900
+ 65000:1226100
+ 65000:1226400
+ 65000:1226500
+ 65000:1226800
+ 65000:1226900
+ 65000:1227900
+ 65000:1228500
+ 65000:1228900
+
+3G_R9: |-
+ 65000:1001910
+ 65000:1211400
+ 65000:1211500
+ 65000:1211600
+ 65000:1211700
+ 65000:1211900
+ 65000:1212400
+ 65000:1212900
+ 65000:1213500
+ 65000:1213900
+ 65000:1214700
+ 65000:1214900
+ 65000:1215900
+
+3G_R8: |-
+ 65000:1001910
+ 65000:1211700
+ 65000:1211800
+ 65000:1211900
+ 65000:1212600
+ 65000:1212900
+ 65000:1213700
+ 65000:1213800
+ 65000:1213900
+ 65000:1214900
+
+3G_R7: |-
+ 65000:1211400
+ 65000:1211700
+ 65000:1211900
+ 65000:1213400
+ 65000:1213700
+ 65000:1213900
+
+3G_R6: |-
+ 65000:1001910
+ 65000:1211400
+ 65000:1211600
+ 65000:1211900
+ 65000:1212600
+ 65000:1213600
+ 65000:1213900
+ 65000:1214600
+
+3G_R5: |-
+ 65000:1213500
+ 65000:1211400
+ 65000:1214900
+ 65000:1213900
+ 65000:1212900
+ 65000:1212400
+ 65000:1211900
+ 65000:1211500
+
+3G_R4: |-
+ 65000:1001910
+ 65000:1211300
+ 65000:1211400
+ 65000:1211500
+ 65000:1211600
+ 65000:1211700
+ 65000:1211900
+ 65000:1212400
+ 65000:1212500
+ 65000:1212600
+ 65000:1212900
+ 65000:1213200
+ 65000:1213300
+ 65000:1213400
+ 65000:1213500
+ 65000:1213600
+ 65000:1213700
+ 65000:1213900
+ 65000:1214300
+ 65000:1214400
+ 65000:1214600
+ 65000:1214900
+
+3G_R3: |-
+ 65000:1001910
+ 65000:1211300
+ 65000:1211400
+ 65000:1211500
+ 65000:1211600
+ 65000:1211700
+ 65000:1211900
+ 65000:1212400
+ 65000:1212500
+ 65000:1212600
+ 65000:1212900
+ 65000:1213200
+ 65000:1213300
+ 65000:1213400
+ 65000:1213500
+ 65000:1213600
+ 65000:1213700
+ 65000:1213900
+ 65000:1214300
+ 65000:1214400
+ 65000:1214600
+ 65000:1214900
+
+3G_R2: |-
+ 65000:1001910
+ 65000:1211300
+ 65000:1211400
+ 65000:1211500
+ 65000:1211600
+ 65000:1211700
+ 65000:1211900
+ 65000:1212400
+ 65000:1212500
+ 65000:1212600
+ 65000:1212900
+ 65000:1213200
+ 65000:1213300
+ 65000:1213400
+ 65000:1213500
+ 65000:1213600
+ 65000:1213700
+ 65000:1213900
+ 65000:1214300
+ 65000:1214400
+ 65000:1214600
+ 65000:1214900
+
+3G_R1: |-
+ 65000:1001910
+ 65000:1211300
+ 65000:1211400
+ 65000:1211500
+ 65000:1211600
+ 65000:1211700
+ 65000:1211900
+ 65000:1212400
+ 65000:1212500
+ 65000:1212600
+ 65000:1212900
+ 65000:1213200
+ 65000:1213300
+ 65000:1213400
+ 65000:1213500
+ 65000:1213600
+ 65000:1213700
+ 65000:1213900
+ 65000:1214300
+ 65000:1214400
+ 65000:1214600
+ 65000:1214900
+
+TIMEZONE:
+ baja_california: timezone PST America/Tijuana
+ baja california: timezone PST America/Tijuana
+ baja_california_norte: timezone PST America/Tijuana
+ baja california norte: timezone PST America/Tijuana
+ sonora: timezone GMT-7 Etc/GMT-7
+ baja_california_sur: timezone MST America/Chihuahua
+ baja california sur: timezone MST America/Chihuahua
+ chihuahua: timezone MST America/Chihuahua
+ nayarit: timezone MST America/Chihuahua
+ sinaloa: timezone MST America/Chihuahua
+ quintana_roo: timezone GMT-5 Etc/GMT-5
+ quintana roo: timezone GMT-5 Etc/GMT-5
+ aguascalientes: timezone CST America/Mexico_City
+ campeche: timezone CST America/Mexico_City
+ coahuila: timezone CST America/Mexico_City
+ colima: timezone CST America/Mexico_City
+ chiapas: timezone CST America/Mexico_City
+ ciudad_de_mexico: timezone CST America/Mexico_City
+ ciudad de mexico: timezone CST America/Mexico_City
+ cdmx: timezone CST America/Mexico_City
+ distrito_federal: timezone CST America/Mexico_City
+ distrito federal: timezone CST America/Mexico_City
+ durango: timezone CST America/Mexico_City
+ guanajuato: timezone CST America/Mexico_City
+ guerrero: timezone CST America/Mexico_City
+ hidalgo: timezone CST America/Mexico_City
+ jalisco: timezone CST America/Mexico_City
+ estado_de_mexico: timezone CST America/Mexico_City
+ estado de mexico: timezone CST America/Mexico_City
+ michoacan: timezone CST America/Mexico_City
+ morelos: timezone CST America/Mexico_City
+ nuevo_leon: timezone CST America/Mexico_City
+ nuevo leon: timezone CST America/Mexico_City
+ oaxaca: timezone CST America/Mexico_City
+ puebla: timezone CST America/Mexico_City
+ queretaro: timezone CST America/Mexico_City
+ san_luis_potosi: timezone CST America/Mexico_City
+ san luis potosi: timezone CST America/Mexico_City
+ slp: timezone CST America/Mexico_City
+ tabasco: timezone CST America/Mexico_City
+ tamaulipas: timezone CST America/Mexico_City
+ tlaxcala: timezone CST America/Mexico_City
+ veracruz: timezone CST America/Mexico_City
+ yucatan: timezone CST America/Mexico_City
+ zacatecas: timezone CST America/Mexico_City
+
+TIMEZONEXE:
+ baja_california: timezone NORTHE -8 0
+ baja california: timezone NORTHE -8 0
+ baja_california_norte: timezone NORTHE -8 0
+ baja california norte: timezone NORTHE -8 0
+ sonora: timezone PACIFIC -7 0
+ baja_california_sur: timezone PACIFIC -7 0
+ baja california sur: timezone PACIFIC -7 0
+ chihuahua: timezone PACIFIC -7 0
+ nayarit: timezone PACIFIC -7 0
+ sinaloa: timezone PACIFIC -7 0
+ quintana_roo: timezone SOUTHE -5 0
+ quintana roo: timezone SOUTHE -5 0
+ aguascalientes: timezone CENTRAL -6 0
+ campeche: timezone CENTRAL -6 0
+ coahuila: timezone CENTRAL -6 0
+ colima: timezone CENTRAL -6 0
+ chiapas: timezone CENTRAL -6 0
+ ciudad_de_mexico: timezone CENTRAL -6 0
+ ciudad de mexico: timezone CENTRAL -6 0
+ cdmx: timezone CENTRAL -6 0
+ distrito_federal: timezone CENTRAL -6 0
+ distrito federal: timezone CENTRAL -6 0
+ durango: timezone CENTRAL -6 0
+ guanajuato: timezone CENTRAL -6 0
+ guerrero: timezone CENTRAL -6 0
+ hidalgo: timezone CENTRAL -6 0
+ jalisco: timezone CENTRAL -6 0
+ estado_de_mexico: timezone CENTRAL -6 0
+ estado de mexico: timezone CENTRAL -6 0
+ michoacan: timezone CENTRAL -6 0
+ morelos: timezone CENTRAL -6 0
+ nuevo_leon: timezone CENTRAL -6 0
+ nuevo leon: timezone CENTRAL -6 0
+ oaxaca: timezone CENTRAL -6 0
+ puebla: timezone CENTRAL -6 0
+ queretaro: timezone CENTRAL -6 0
+ san_luis_potosi: timezone CENTRAL -6 0
+ san luis potosi: timezone CENTRAL -6 0
+ slp: timezone CENTRAL -6 0
+ tabasco: timezone CENTRAL -6 0
+ tamaulipas: timezone CENTRAL -6 0
+ tlaxcala: timezone CENTRAL -6 0
+ veracruz: timezone CENTRAL -6 0
+ yucatan: timezone CENTRAL -6 0
+ zacatecas: timezone CENTRAL -6 0
+
+# A diferencia del resto de los estados de la República Mexicana, 
+# estos municipios en la franja fronteriza norte aplican cambio de horario de verano 
+# el segundo domingo de marzo a las 2:00 de la manana
+# y termina el primer domingo de noviembre a las 2:00 de la mañana
+# https://cenam.mx/hora_oficial/
+# https://www.gob.mx/sener/es/articulos/inicia-el-horario-de-verano-en-33-municipios-de-la-franja-fronteriza-norte?idiom=es
+
+# Los 33 municipios fronterizos en donde aplicará el cambio son:
+# Baja California: Tijuana, Mexicali, Ensenada, Playa Rosarito y Tecate.
+# En Chihuahua: Juárez, Ojinaga, Ascensión, Coyame del Sotol, 
+# Guadalupe, Janos, Manuel Benavides y Práxedis G. Guerrero
+# En Coahuila: Acuña, Piedras Negras, Guerrero, Hidalgo, 
+# Jiménez, Zaragoza, Nava y Ocampo, 
+# En Nuevo León: Anáhuac y Los Aldama, 
+# En Tamaulipas: Nuevo Laredo, Reynosa, Matamoros, 
+# Camargo, Guerrero, Gustavo Díaz Ordaz, 
+# Mier, Miguel Alemán, Río Bravo y Valle Hermoso.
+
+REGIONS: 
+ baja_california: "1"
+ baja california: "1"
+ baja_california_norte: "1"
+ baja california norte: "1"
+ baja_california_sur: "1"
+ baja california sur: "1"
+ sonora: "2"
+ sinaloa: "2"
+ chihuahua: "3"
+ durango: "3"
+ coahuila: "4"
+ nuevo_leon: "4"
+ nuevo leon: "4"
+ tamaulipas: "4"
+ nayarit: "5"
+ jalisco: "5"
+ colima: "5"
+ michoacan: "5"
+ zacatecas: "6"
+ aguascalientes: "6"
+ guanajuato: "6"
+ queretaro: "6"
+ slp: "6"
+ san luis potosi: "6"
+ san_luis_potosi: "6"
+ veracruz: "7"
+ puebla: "7"
+ guerrero: "7"
+ oaxaca: "7"
+ tlaxcala: "7"
+ tabasco: "8"
+ campeche: "8"
+ chiapas: "8"
+ quintana_roo: "8"
+ quintana roo: "8"
+ yucatan: "8"
+ cdmx: "9"
+ ciudad_de_mexico: "9"
+ ciudad de mexico: "9"
+ distrito_federal: "9"
+ distrito federal: "9"
+ hidalgo: "9"
+ estado_de_mexico: "9"
+ estado de mexico: "9"
+ morelos: "9"
+
+ISE_SERVERS:
+ - 10.150.123.10
+ - 10.150.123.26
+ - 10.150.138.130
+ - 10.150.138.146
+ - 10.150.141.130
+ - 10.150.141.142
+ - 10.32.200.6
+ - 10.32.200.7
+ - 10.32.200.8
+ - 10.32.200.9
+ - 10.38.22.134
+ - 10.38.22.135
+ - 10.38.22.136
+ - 10.38.22.137
+
+RED_DOMAIN_MGMT_SUBNET: 10.190.0.0/22
+BLUE_DOMAIN_MGMT_SUBNET: 10.241.62.0/24
+
+BGP_REGISTERED_CITY_CODE:
+ "9":
+  ciudad_de_mexico: "0"
+  cdmx: "0"
+  ciudad de mexico: "0"
+  pachuca: "10"
+  tulancingo: "14"
+  toluca: "16"
+  cuernavaca: "18"
+ "8":
+  yucatan: "01"
+  villa hermosa: "02"
+  campeche: "03"
+  quintana roo: "04"
+ "7":
+  puebla: "01"
+  veracruz: "02"
+  acapulco: "03"
+  oaxaca: "04"
+  tlaxcala: "05"
+ "6":
+  san miguel allende: "01"
+  celaya: "02"
+  aguascalientes: "03"
+  queretaro: "04"
+  san juna de rio queretaro: "04"
+  leon: "05"
+  san luis: "06"
+  zacatecas: "07"
+  iraputo: "08"
+ "5":
+  guadalajara: "01"
+  zapopan: "02"
+  san pedro tlaquepaque: "03"
+  nayarit: "04"
+  colima: "05"
+ "4":
+  monterrey: "01"
+  saltillo: "02"
+  guadalupe: "03"
+ "3":
+  chihuahua: "01"
+  ciudad juarez: "02"
+  delicias: "03"
+  parral: "04"
+ "2":
+  sonora: "01"
+  nogales: "02"
+  culiacan: "03"
+  ciudad obregon: "04"
+  mazatlan: "05"
+ "1":
+  ensenada: "01"
+  tijuana: "02"
+  mexicali: "03"
+  san jose del cabo: "04"
+  tecate: "05"
+
+X2_CITY_CODE:
+ "9":
+  ciudad_de_mexico: "61"
+  cdmx: "61"
+  ciudad de mexico: "61"
+  pachuca: "11"
+  tulancingo: "14"
+  toluca: "41"
+  cuernavaca: "21"
+ "8":
+  yucatan: "01"
+  villa hermosa: "02"
+  campeche: "03"
+  quintana roo: "04"
+ "7":
+  puebla: "01"
+  veracruz: "02"
+  acapulco: "03"
+  oaxaca: "04"
+  tlaxcala: "05"
+ "6":
+  san miguel allende: "01"
+  celaya: "02"
+  aguascalientes: "03"
+  queretaro: "04"
+  san juna de rio queretaro: "04"
+  leon: "05"
+  san luis: "06"
+  zacatecas: "07"
+  iraputo: "08"
+ "5":
+  guadalajara: "01"
+  zapopan: "02"
+  san pedro tlaquepaque: "03"
+  nayarit: "04"
+  colima: "05"
+ "4":
+  monterrey: "01"
+  saltillo: "02"
+  guadalupe: "03"
+ "3":
+  chihuahua: "01"
+  ciudad juarez: "02"
+  delicias: "03"
+  parral: "04"
+ "2":
+  sonora: "01"
+  nogales: "02"
+  culiacan: "03"
+  ciudad obregon: "04"
+  mazatlan: "05"
+ "1":
+  ensenada: "01"
+  tijuana: "02"
+  mexicali: "03"
+  san jose del cabo: "04"
+  tecate: "05"

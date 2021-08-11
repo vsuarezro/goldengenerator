@@ -1,0 +1,25 @@
+terminal mon 0
+show version
+show inventory
+show run
+show facility-alarm status
+show ip int brief
+show interfaces
+show interfaces transceiver
+ping <>
+ping <>
+show environment temperature
+show process cpu history
+show process cpu sorted
+show process memory
+show bridge-domain
+show ethernet service instance stats
+show bfd neighbors
+show bfd neighbors details
+show lldp neighbors 
+show lldp neighbors detail
+show bgp ipv4 unicast summary
+show mpls ldp neighbor detail
+show diagnostic result slot all detail 
+show platform diag 
+dir all-filesystems

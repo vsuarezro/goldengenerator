@@ -1,0 +1,6 @@
+
+interface Ten0/0/0/<>
+ no shutdown
+
+interface Ten0/0/0/<>
+ no shutdown

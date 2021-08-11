@@ -1,0 +1,32 @@
+term leng 0
+sh alarms brief system active 
+sh vrf all 
+sh arp vrf ATT_OAM 
+sh arp vrf ATT_3G 
+sh arp vrf ATT_LTE 
+show route vrf ATT_OAM 
+show route vrf ATT_3G 
+show route vrf ATT_LTE
+show interface description 
+show ip interface brief | ex Shut 
+show run router isis 
+show isis interface brief 
+show isis neighbor 
+show isis adjacency 
+show isis hostname 
+show route isis 
+show isis route detail 
+show ip cef 
+show isis segment-routing label table 
+show bfd session 
+show bfd session detail 
+show bfd summary 
+show bfd ipv4 session 
+show bfd all 
+show run router bgp 
+show bgp ipv4 unicast 
+show bgp ipv4 unicast summary 
+sh bgp ipv4 label summary 
+sh bgp vpnv4 uni 
+sh bgp vpnv4 uni summ
+show ip interface

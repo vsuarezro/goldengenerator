@@ -1,0 +1,22 @@
+term leng 0
+show platform
+show platform vm 
+show redundancy 
+show redundancy summary 
+show ipv4 interface brief 
+show interface summary
+show install active 
+show install commit 
+show hw-module fpd 
+show alarms
+show media 
+show inventory
+show log
+show alarms brief system active
+show hw-module fpd all
+show crypto key mypubkey rsa
+show run | inc ssh
+cfs check/clear 
+admin show install active 
+admin show env all
+!

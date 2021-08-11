@@ -1,0 +1,891 @@
+version 16.12
+no service pad
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+service password-encryption
+no service dhcp
+no platform punt-keepalive disable-kernel-core
+platform bfd-debug-trace 1
+platform xconnect load-balance-hash-algo mac-ip-instanceid
+platform cos-mark protocol arp cos-value 6
+platform tcam-parity-error enable
+platform tcam-threshold enable ucastv4 50
+platform tcam-threshold enable mcastv4 50
+platform tcam-threshold enable ivlan 50
+platform tcam-threshold enable evlan 50
+platform tcam-threshold enable ipv4-tunnel 50
+platform tcam-threshold enable acl 50
+platform tcam-threshold enable qos 50
+platform tcam-threshold enable ucastv6 50
+platform tcam-threshold enable mcastv6 50
+platform tcam-threshold enable eoam 50
+platform tcam-threshold enable ipv6-acl 50
+platform tcam-threshold enable egress-acl 50
+platform tcam-threshold enable eqos 50
+platform tcam-threshold alarm-frequency 1
+!
+hostname {{HOSTNAME}}
+{% if MODEL == 'ASR920-12CZ-D' %}
+boot-start-marker
+boot system bootflash:asr920-universalk9_npe.16.12.03.SPA.bin
+boot-end-marker
+!
+{% else %}
+boot-start-marker
+boot system bootflash:asr920igp-universalk9_npe.16.12.03.SPA.bin
+boot-end-marker
+!
+{% endif %}
+!
+vrf definition ATT_3G
+ rd 65000:1001{{REGION}}10
+ !
+ address-family ipv4
+  {% if REGION == '9' %} 
+  route-target export 65000:1001911
+  {% else %}
+  route-target export 65000:1001{{REGION}}10
+  {% endif %}
+  {{RT3G|rstrip(', ')|prefix('route-target import ')|indent(2)}}
+  maximum routes 10000 warning-only
+ exit-address-family
+!
+vrf definition ATT_LTE
+ rd 65000:1002{{REGION}}10
+ !
+ address-family ipv4
+  {% if REGION == '9' %} 
+  route-target export 65000:1002902
+  {% else %}
+  route-target export 65000:1002{{REGION}}10
+  {% endif %}
+  route-target export {{X2}}
+  route-target import {{X2}}
+  {% if DALIA %}
+  route-target export {{DALIA}}
+  route-target import {{DALIA}}
+  {% endif %}
+  {{RTLTE|rstrip(', ')|prefix('route-target import ')|indent(2)}}
+  maximum routes 10000 warning-only
+ exit-address-family
+!
+vrf definition ATT_OAM
+ rd 65000:1000{{REGION}}12
+ !
+ address-family ipv4
+  route-target export 65000:1000913
+  route-target import 65000:1000912
+  route-target import 65000:1201900
+  route-target import 65000:1202900
+  maximum routes 10000 warning-only
+ exit-address-family
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+logging buffered 64000 informational
+no logging console
+!
+aaa new-model
+!
+!
+aaa group server tacacs+ TACACS_ISE
+ server-private {{ISE_SERVER1}} key 7 107A3B163153044D040E2112261B366013
+ server-private {{ISE_SERVER2}} key 7 122D3718264F1A4222212F113106274636
+ server-private {{ISE_SERVER3}} key 7 053F34001508584F110F1C2B093F017F1A
+ ip vrf forwarding ATT_OAM
+ ip tacacs source-interface Loopback1
+!
+aaa authentication login default group TACACS_ISE local enable
+aaa authorization exec default group TACACS_ISE local none 
+aaa authorization commands 0 default group TACACS_ISE local 
+aaa authorization commands 1 default group TACACS_ISE local 
+aaa authorization commands 15 default group TACACS_ISE local 
+aaa accounting exec default start-stop group TACACS_ISE
+aaa accounting commands 0 default start-stop group TACACS_ISE
+aaa accounting commands 1 default start-stop group TACACS_ISE
+aaa accounting commands 15 default start-stop group TACACS_ISE
+!
+!
+!
+!
+!
+aaa session-id common
+clock {{TIMEZONE}}
+{% if BORDER_REGION %}
+clock summer-time SUMMER recurring 2 Sun Mar 3:00 1 Sun Nov 2:00
+{% elif STATE == 'SONORA' or STATE == 'QUINTANA ROO' %}
+! no summertime
+{% else %}
+clock summer-time SUMMER recurring 1 Sun Apr 2:00 last Sun Oct 1:00
+{% endif %}
+no ip source-route
+ip options drop
+port-channel load-balance-hash-algo src-dst-ip
+no ip domain lookup
+ip domain name att.com
+login on-success log
+{% if REDDOMAIN  %}
+mpls label protocol ldp
+mpls ldp graceful-restart
+mpls ldp igp sync holddown 300
+mpls ldp router-id loopback0 force
+{% endif %}
+multilink bundle-name authenticated
+!
+key chain ISIS-AUTH
+ key 1
+  key-string 7 <password ISIS>
+   cryptographic-algorithm md5
+license udi pid ASR-920-12SZ-IM sn <serial>
+license accept end user agreement
+license boot level advancedmetroipaccess
+no license smart enable
+archive
+ log config
+  logging enable
+  hidekeys
+  notify syslog contenttype plaintext
+memory free low-watermark processor 4992
+!
+!
+spanning-tree mode mst
+spanning-tree extend system-id
+sdm prefer default 
+no diagnostic bootup level
+!
+username <username> privilege 15 secret <password>
+!
+redundancy
+{% if REDDOMAIN %}
+bfd map ipv4 {{AGG1_LOOPBACK0}}/32 {{LOOPBACK0}}/32 BGPGA
+bfd map ipv4 {{AGG2_LOOPBACK0}}/32 {{LOOPBACK0}}/32 BGPGA
+bfd-template multi-hop BGPGA
+ interval min-tx 50 min-rx 50 multiplier 3
+{% endif %}
+transceiver type all
+ monitoring
+!
+!
+lldp run
+class-map match-any CM-COS4-DSCP&EXP
+  description OAM
+ match mpls experimental topmost 1 
+ match dscp cs1 
+ match dscp af11 
+ match dscp af12 
+ match dscp af13 
+class-map match-any CM-COS2V-QG-ACCESS
+  description buffered_streaming
+ match qos-group 4
+class-map match-any CM-COS2-DSCP&EXP
+  description LTE_TCP
+ match mpls experimental topmost 3 
+ match dscp cs3 
+ match dscp af31 
+ match dscp af32 
+ match dscp af33 
+class-map match-any CM-COS3-DSCP&EXP
+  description 3G_TCP_&_billing
+ match mpls experimental topmost 2 
+ match dscp cs2 
+ match dscp af21 
+ match dscp af22 
+ match dscp af23 
+class-map match-any CM-COS1-DSCP&EXP
+  description realtime_&_conversational
+ match mpls experimental topmost 5 
+ match dscp ef 
+class-map match-any CM-COS2V-QG
+  description buffered_streaming
+ match qos-group 4
+class-map match-any CM-CONTROL-DSCP&EXP
+  description control_&_signaling
+ match mpls experimental topmost 6 
+ match dscp cs5 
+ match dscp cs6 
+ match dscp cs7 
+class-map match-any CM-COS2V-DSCP
+  description buffered_streaming
+ match dscp cs4 
+ match dscp af41 
+ match dscp af42 
+ match dscp af43 
+class-map match-any CM-CONTROL-DSCP
+  description control_&_signaling
+ match dscp cs5 
+ match dscp cs6 
+ match dscp cs7 
+class-map match-any CM-COS2V-DSCP&EXP
+  description buffered_streaming
+ match mpls experimental topmost 4 
+ match dscp cs4 
+ match dscp af41 
+ match dscp af42 
+ match dscp af43 
+class-map match-any CM-COS4-QG-ACCESS
+  description OAM
+ match qos-group 1
+class-map match-any CM-COS2-QG-ACCESS
+  description LTE_TCP
+ match qos-group 3
+class-map match-any CM-COS3-QG-ACCESS
+  description 3G_TCP_&_billing
+ match qos-group 2
+class-map match-any CM-COS1-QG-ACCESS
+  description realtime_&_conversational
+ match qos-group 5
+class-map match-any CM-CONTROL-QG
+  description control_&_signaling
+ match qos-group 6
+class-map match-any CM-COS4-DSCP
+  description OAM
+ match dscp cs1 
+ match dscp af11 
+ match dscp af12 
+ match dscp af13 
+class-map match-any CM-COS1-DSCP
+  description realtime_&_conversational
+ match dscp ef 
+class-map match-any CM-COS3-DSCP
+  description 3G_TCP_&_billing
+ match dscp cs2 
+ match dscp af21 
+ match dscp af22 
+ match dscp af23 
+class-map match-any CM-COS2-DSCP
+  description LTE_TCP
+ match dscp cs3 
+ match dscp af31 
+ match dscp af32 
+ match dscp af33 
+class-map match-any CM-COS4-QG
+  description OAM
+ match qos-group 1
+class-map match-any CM-COS3-QG
+  description 3G_TCP_&_billing
+ match qos-group 2
+class-map match-any CM-COS2-QG
+  description LTE_TCP
+ match qos-group 3
+class-map match-any CM-CONTROL-QG-ACCESS
+  description control_&_signaling
+ match qos-group 6
+class-map match-any CM-COS1-QG
+  description realtime_&_conversational
+ match qos-group 5
+!
+policy-map PM-EGRESS
+ class CM-COS2V-QG
+  bandwidth remaining percent 30 
+ class CM-CONTROL-QG
+  bandwidth remaining percent 10 
+ class CM-COS3-QG
+  bandwidth remaining percent 15 
+ class CM-COS2-QG
+  bandwidth remaining percent 30 
+  queue-limit percent 4
+ class CM-COS4-QG
+  bandwidth remaining percent 5 
+ class CM-COS1-QG
+  priority percent 50
+ class class-default
+  bandwidth remaining percent 10 
+!
+policy-map PM-INGRESS
+ class CM-CONTROL-DSCP&EXP
+  set qos-group 6
+ class CM-COS1-DSCP&EXP
+  set qos-group 5
+ class CM-COS2V-DSCP&EXP
+  set qos-group 4
+ class CM-COS2-DSCP&EXP
+  set qos-group 3
+ class CM-COS3-DSCP&EXP
+  set qos-group 2
+ class CM-COS4-DSCP&EXP
+  set qos-group 1
+ class class-default
+  set qos-group 0
+!
+policy-map PM-EGRESS-to-ACCESS
+ class CM-COS4-QG-ACCESS
+  bandwidth remaining percent 5 
+  queue-limit percent 8
+  set cos 1
+ class CM-CONTROL-QG-ACCESS
+  bandwidth remaining percent 10 
+  queue-limit percent 8
+  set cos 6
+ class CM-COS3-QG-ACCESS
+  bandwidth remaining percent 15 
+  queue-limit percent 8
+  set cos 2
+ class CM-COS2-QG-ACCESS
+  bandwidth remaining percent 30 
+  queue-limit percent 10
+  set cos 3
+ class CM-COS2V-QG-ACCESS
+  bandwidth remaining percent 30 
+  queue-limit percent 8
+  set cos 4
+ class CM-COS1-QG-ACCESS
+  priority percent 50
+  queue-limit percent 8
+  set cos 5
+ class class-default
+  bandwidth remaining percent 10 
+!
+policy-map PM-INGRESS-from-ACCESS
+ class CM-CONTROL-DSCP
+  set mpls experimental imposition 6
+  set qos-group 6
+ class CM-COS1-DSCP
+  set mpls experimental imposition 5
+  set qos-group 5
+  police cir percent 50 conform-action transmit  exceed-action drop 
+ class CM-COS2V-DSCP
+  set mpls experimental imposition 4
+  set qos-group 4
+ class CM-COS2-DSCP
+  set mpls experimental imposition 3
+  set qos-group 3
+ class CM-COS3-DSCP
+  set mpls experimental imposition 2
+  set qos-group 2
+ class CM-COS4-DSCP
+  set mpls experimental imposition 1
+  set qos-group 1
+ class class-default
+  set mpls experimental imposition 0
+!
+interface Loopback0
+ description Routing
+ ip address {{LOOPBACK0}} 255.255.255.255
+ isis tag 1
+!
+interface Loopback1
+ description Management
+ vrf forwarding ATT_OAM
+ ip address {{LOOPBACK_MANAGEMENT}} 255.255.255.255
+{% if BUNDLE_UPLINK %}
+interface Port-channel10
+ description To-{{AGG1_HOSTNAME}}-LAG<ID>
+ mtu 9198
+ ip address {{ADDRESS_P2P_TO_AGG1}} 255.255.255.254
+ ip router isis RAN-0{{REGION}}
+ isis network point-to-point 
+ isis metric {{INTERFACE_TO_AGG1|metric}} level-1
+ isis authentication mode md5
+ isis authentication key-chain ISIS-AUTH
+ load-interval 30
+ mpls ip
+ mpls ldp igp sync delay 10
+ bfd interval 50 min_rx 50 multiplier 3
+ no bfd echo
+ ip verify unicast source reachable-via any
+!
+interface {{INTERFACE_TO_AGG1}}
+ description To-{{AGG1_HOSTNAME}}-{{AGG1_PORT}}
+ mtu 9198
+ load-interval 30
+ carrier-delay up 2
+ carrier-delay down msec 0
+ service-policy output PM-EGRESS
+ service-policy input PM-INGRESS
+ channel-group 10 mode active
+!
+interface {{INTERFACE_TO_AGG2}}
+ description To-{{AGG2_HOSTNAME}}-{{AGG2_PORT}}
+ mtu 9198
+ load-interval 30
+ carrier-delay up 2
+ carrier-delay down msec 0
+ service-policy output PM-EGRESS
+ service-policy input PM-INGRESS
+ channel-group 10 mode active
+!
+{% else %}
+interface {{INTERFACE_TO_AGG1}}
+ description To-{{AGG1_HOSTNAME}}-{{AGG1_PORT}}
+ mtu {{ INTERFACE_TO_AGG1_MTU|default('9198', true) }}
+ ip address {{ADDRESS_P2P_TO_AGG1}} 255.255.255.254
+{% if AGG1_LOOPBACK_MANAGEMENT is not blue and BLUEDOMAIN %}
+ ip router isis RAN-0{{REGION}}-LDP
+{% else %}
+ ip router isis RAN-0{{REGION}}
+{% endif %}
+ isis network point-to-point 
+ isis metric {{INTERFACE_TO_AGG1|metric}} level-1
+ isis authentication mode md5
+ isis authentication key-chain ISIS-AUTH
+ carrier-delay up 2
+ carrier-delay down msec 0
+{% if AGG1_LOOPBACK_MANAGEMENT is not blue %}
+ mpls ip
+ mpls ldp igp sync delay 10
+{% endif %}
+ bfd interval 50 min_rx 50 multiplier 3
+ no bfd echo
+ service-policy input PM-INGRESS
+ service-policy output PM-EGRESS
+ load-interval 30
+ ip verify unicast source reachable-via any
+!
+interface {{INTERFACE_TO_AGG2}}
+ description To-{{AGG2_HOSTNAME}}-{{AGG2_PORT}}
+ mtu {{ INTERFACE_TO_AGG2_MTU|default('9198', true) }}
+ ip address {{ADDRESS_P2P_TO_AGG2}} 255.255.255.254
+{% if AGG2_LOOPBACK_MANAGEMENT is not blue and BLUEDOMAIN %}
+ ip router isis RAN-0{{REGION}}-LDP
+{% else %}
+ ip router isis RAN-0{{REGION}}
+{% endif %}
+ isis network point-to-point 
+ isis metric {{INTERFACE_TO_AGG2|metric}} level-1
+ isis authentication mode md5
+ isis authentication key-chain ISIS-AUTH
+ carrier-delay up 2
+ carrier-delay down msec 0
+{% if AGG2_LOOPBACK_MANAGEMENT is not blue %}
+ mpls ip
+ mpls ldp igp sync delay 10
+{% endif %}
+ bfd interval 50 min_rx 50 multiplier 3
+ no bfd echo
+ service-policy input PM-INGRESS
+ service-policy output PM-EGRESS
+ load-interval 30
+ ip verify unicast source reachable-via any
+!
+{% endif %}
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ shutdown
+ negotiation auto
+!
+{% if BLUEDOMAIN %}
+router isis RAN-0{{REGION}}
+ net {{NETID}}
+ is-type level-1
+ advertise passive-only
+ authentication send-only level-1
+ metric-style wide
+ fast-flood 10
+ max-lsp-lifetime 65535
+ lsp-refresh-interval 65000
+ spf-interval 5 50 200
+ prc-interval 5 50 200
+ lsp-gen-interval 5 50 200
+ no hello padding point-to-point
+ log-adjacency-changes
+ nsf ietf
+ segment-routing mpls
+ fast-reroute per-prefix level-1 all
+ fast-reroute ti-lfa level-1
+ passive-interface Loopback0
+ distribute-list route-map RM-RING-TAG in
+ bfd all-interfaces
+{% endif %}
+{% if REDDOMAIN %}
+ {% if BLUEDOMAIN %}
+router isis RAN-0{{REGION}}-LDP
+ {% else %}
+router isis RAN-0{{REGION}}
+ {% endif %}
+ net {{NETID}}
+ is-type level-1
+ router-id Loopback0
+ advertise passive-only
+ authentication send-only level-1
+ metric-style wide
+ fast-flood 10
+ max-lsp-lifetime 65535
+ lsp-refresh-interval 65000
+ spf-interval 5 50 200
+ prc-interval 5 50 200
+ lsp-gen-interval 5 50 200
+ no hello padding point-to-point
+ log-adjacency-changes
+ nsf ietf
+ fast-reroute per-prefix level-1 all
+ passive-interface Loopback0
+ distribute-list route-map RM-RING-TAG in
+ bfd all-interfaces
+ mpls ldp sync
+{% endif %}
+!
+router bgp 65000
+ template peer-policy PP-IPv4-POLICY
+{% if BLUEDOMAIN %}
+  aigp
+{% endif %}
+  send-community
+  send-label
+ exit-peer-policy
+ !
+ template peer-policy PP-VPNv4-POLICY
+  send-community extended
+ exit-peer-policy
+ !
+ template peer-session PS-AGG
+  remote-as 65000
+  password <password BGP>
+  update-source Loopback0
+{% if REDDOMAIN %}
+  fall-over bfd multi-hop
+{% endif %}
+ exit-peer-session
+ !
+ bgp router-id {{LOOPBACK0}}
+ bgp log-neighbor-changes
+ bgp graceful-restart
+ no bgp default ipv4-unicast
+ neighbor {{AGG1_LOOPBACK0}} inherit peer-session PS-AGG
+ neighbor {{AGG2_LOOPBACK0}} inherit peer-session PS-AGG
+ !
+ address-family ipv4
+  bgp additional-paths receive
+  bgp additional-paths install
+  bgp mpls-local-label
+  bgp nexthop route-map RM-NEXT-HOP-SELEC
+  bgp nexthop trigger delay 0
+  {% if BLUEDOMAIN %}
+  network {{LOOPBACK0}} mask 255.255.255.255 route-map RM-CSR-CML
+  {% else %}
+  network {{LOOPBACK0}} mask 255.255.255.255 route-map RM-CSR_CML
+  {% endif %}
+{% if BLUEDOMAIN %}
+  segment-routing mpls
+{% endif %}
+  neighbor {{AGG1_LOOPBACK0}} activate
+  neighbor {{AGG1_LOOPBACK0}} inherit peer-policy PP-IPv4-POLICY
+{% if BLUEDOMAIN %}
+  neighbor {{AGG1_LOOPBACK0}} route-map RM-CSR-FROM-AGG in
+{% else %}
+  neighbor {{AGG1_LOOPBACK0}} route-map RM-From_AGG_In in
+{% endif %}
+  neighbor {{AGG2_LOOPBACK0}} activate
+  neighbor {{AGG2_LOOPBACK0}} inherit peer-policy PP-IPv4-POLICY
+{% if BLUEDOMAIN %}
+  neighbor {{AGG2_LOOPBACK0}} route-map RM-CSR-FROM-AGG in
+{% else %}
+  neighbor {{AGG2_LOOPBACK0}} route-map RM-From_AGG_In in
+{% endif %}
+ exit-address-family
+ !
+ address-family vpnv4
+  bgp nexthop trigger delay 1
+  neighbor {{AGG1_LOOPBACK0}} activate
+  neighbor {{AGG1_LOOPBACK0}} send-community extended
+  neighbor {{AGG1_LOOPBACK0}} inherit peer-policy PP-VPNv4-POLICY
+  neighbor {{AGG2_LOOPBACK0}} activate
+  neighbor {{AGG2_LOOPBACK0}} send-community extended
+  neighbor {{AGG2_LOOPBACK0}} inherit peer-policy PP-VPNv4-POLICY
+ exit-address-family
+ !
+ address-family rtfilter unicast
+  neighbor {{AGG1_LOOPBACK0}} activate
+  neighbor {{AGG1_LOOPBACK0}} send-community extended
+  neighbor {{AGG2_LOOPBACK0}} activate
+  neighbor {{AGG2_LOOPBACK0}} send-community extended
+ exit-address-family
+ !
+address-family ipv4 vrf ATT_3G
+  redistribute connected
+  redistribute static
+ exit-address-family
+ !
+address-family ipv4 vrf ATT_LTE
+  redistribute connected
+  redistribute static
+ exit-address-family
+ !
+address-family ipv4 vrf ATT_OAM
+  network {{LOOPBACK_MANAGEMENT}} mask 255.255.255.255
+  redistribute connected
+  redistribute static
+ exit-address-family
+!
+no ip forward-protocol nd
+ip ssh time-out 5
+ip ssh authentication-retries 5
+ip ssh version 2
+ip ssh precedence 1
+ip ssh server algorithm mac hmac-sha1 hmac-sha2-256 hmac-sha2-512
+ip scp server enable
+!
+ip bgp-community new-format
+{% if BLUEDOMAIN %}
+ip community-list expanded CML-DEVICE permit 65000:19000
+ip community-list expanded CML-DEVICE permit 65000:1.400
+{% else %}
+ip community-list expanded NGDC-DEVICE permit 65000:1.400
+ip community-list standard CML-DEVICE permit 65000:19000
+{% endif %}
+{% if REGION == '9' and CITY_CODE == '00' -%}
+ip community-list expanded CML-CITY permit 65000:{{REGION}}{{CITY_CODE}}{{AGGREGATION_RING|default('<AGGRING>',true)}}
+{% else %}
+ip community-list expanded CML-CITY permit 65000:{{REGION}}{{CITY_CODE}}0
+{% endif %}
+ip route vrf <VRF_name> <NodeB_eNodeB_GSM_IP_address> <Mask> <Point to Point> name <NodeB_eNodeB_description>
+no ip http server
+no ip http secure-server
+ip tacacs source-interface Loopback1 
+logging alarm informational
+logging trap informational
+logging source-interface Loopback1 vrf ATT_OAM
+logging host 10.150.10.73 vrf ATT_OAM 
+logging host 10.32.209.28 vrf ATT_OAM
+logging host 10.36.226.108 vrf ATT_OAM
+logging host 10.32.212.163 vrf ATT_OAM
+logging host 10.32.15.103 vrf ATT_OAM
+logging host 10.36.7.74 vrf ATT_OAM
+ip access-list standard 2
+ remark LISTA DE ACCESO PARA NTP SERVERS
+ 10 permit {{NTP_SERVER1 if NTP_SERVER1 else AGG1_LOOPBACK_MANAGEMENT}}
+ 20 permit {{NTP_SERVER2 if NTP_SERVER2 else AGG2_LOOPBACK_MANAGEMENT}}
+!
+ip access-list standard 95
+ 10 remark LISTA DE ACCESO PARA COMUNIDAD netview
+ 10 permit 10.189.48.124
+ 20 permit 172.19.235.191
+ 30 permit 10.36.231.240 0.0.0.15
+ 40 permit 10.32.191.176 0.0.0.15
+ 50 permit 10.36.237.64 0.0.0.63
+ 60 permit 10.32.192.0 0.0.0.63
+!
+ip access-list standard 96
+ 10 remark LISTA DE ACCESO PARA COMUNIDAD 3PnM4n4g3R_2017!
+ 10 permit 10.32.209.24 0.0.0.7
+ 20 permit 10.36.226.104 0.0.0.7
+ 30 permit 10.32.250.107 0.0.0.0
+!
+ip access-list standard 97
+ 10 remark LISTA DE ACCESO PARA COMUNIDAD 4TTipbh16
+ 10 permit 10.32.15.103
+ 20 permit 10.36.7.74
+!
+ip access-list standard 98
+ 10 remark LISTA DE ACCESO PARA COMUNIDAD 0SSN3TC00L
+ 10 permit 10.32.242.132
+ 20 permit 10.32.242.136
+!
+ip access-list extended 150
+ 10 remark LISTA DE ACCESO PARA ACCESO VTY-SSH
+ 10 permit tcp 10.32.1.128 0.0.0.127 10.0.0.0 0.255.255.255 eq 22
+ 20 permit tcp 10.34.6.0 0.0.0.255 10.0.0.0 0.255.255.255 eq 22
+ 30 permit tcp 10.203.192.0 0.0.0.255 10.0.0.0 0.255.255.255 eq 22
+ 40 permit tcp 10.32.14.0 0.0.0.255 10.0.0.0 0.255.255.255 eq 22
+ 50 permit tcp 10.34.7.192 0.0.0.31 10.0.0.0 0.255.255.255 eq 22
+ 60 permit tcp 10.174.1.0 0.0.0.31 10.0.0.0 0.255.255.255 eq 22
+ 70 permit tcp 10.174.4.0 0.0.0.63 10.0.0.0 0.255.255.255 eq 22
+ 80 permit tcp 10.32.2.100 0.0.0.3 10.0.0.0 0.255.255.255 eq 22
+ 90 permit tcp 10.32.2.104 0.0.0.1 10.0.0.0 0.255.255.255 eq 22
+ 100 permit tcp host 10.32.2.108 10.0.0.0 0.255.255.255 eq 22
+ 110 permit tcp 10.32.209.24 0.0.0.7 10.0.0.0 0.255.255.255 eq 22
+ 120 permit tcp 10.36.226.104 0.0.0.7 10.0.0.0 0.255.255.255 eq 22
+ 130 permit tcp 10.32.242.128 0.0.0.127 10.0.0.0 0.255.255.255 eq 22
+ 140 permit tcp host 10.32.246.10 10.0.0.0 0.255.255.255 eq 22
+ 150 permit tcp 10.32.250.64 0.0.0.63 10.0.0.0 0.255.255.255 eq 22
+ 160 permit tcp 10.36.231.240 0.0.0.7 10.0.0.0 0.255.255.255 eq 22
+ 170 permit tcp 10.103.0.0 0.0.255.255 10.0.0.0 0.255.255.255 eq 22
+ 180 permit tcp 10.106.0.0 0.0.255.255 10.0.0.0 0.255.255.255 eq 22
+ 190 permit tcp 10.107.0.0 0.0.255.255 10.0.0.0 0.255.255.255 eq 22
+ 200 permit tcp host 10.150.10.243 10.0.0.0 0.255.255.255 eq 22
+ 210 permit tcp host 10.207.3.11 10.0.0.0 0.255.255.255 eq 22
+ 220 permit tcp host 10.190.84.98 10.0.0.0 0.255.255.255 eq 22
+ 230 permit tcp 10.32.212.128 0.0.0.63 10.0.0.0 0.255.255.255 eq 22
+ 240 permit tcp 10.224.0.0 0.0.255.255 10.0.0.0 0.255.255.255 eq 22
+ 250 permit tcp host 10.32.15.103 10.0.0.0 0.255.255.255 eq 22
+ 260 permit tcp host 10.36.7.74 10.0.0.0 0.255.255.255 eq 22
+ 270 permit tcp 10.150.57.0 0.0.0.127 10.0.0.0 0.255.255.255 eq 22
+ 280 permit tcp host 10.150.10.73 10.0.0.0 0.255.255.255 eq 22
+ 290 permit tcp 135.208.47.0 0.0.0.255 10.0.0.0 0.255.255.255 eq 22
+ 300 permit tcp host 135.208.45.216 10.0.0.0 0.255.255.255 eq 22
+ 310 permit tcp host 10.32.2.116 10.0.0.0 0.255.255.255 eq 22
+ 320 permit tcp host 10.32.250.28 10.0.0.0 0.255.255.255 eq 22
+ 330 permit tcp 10.36.231.240 0.0.0.15 10.0.0.0 0.255.255.255 eq 22
+ 340 permit tcp 10.32.191.176 0.0.0.15 10.0.0.0 0.255.255.255 eq 22
+ 350 permit tcp 10.36.237.64 0.0.0.63 10.0.0.0 0.255.255.255 eq 22
+ 360 permit tcp 10.32.192.0 0.0.0.63 10.0.0.0 0.255.255.255 eq 22
+ 370 permit tcp 10.32.240.168 0.0.0.7 10.0.0.0 0.255.255.255 eq 22
+ 380 permit tcp 10.150.6.208 0.0.0.7 10.0.0.0 0.255.255.255 eq 22
+ 380 permit tcp 10.150.6.208 0.0.0.7 10.0.0.0 0.255.255.255 eq 22
+!
+ip access-list extended 151
+ 10 permit tcp 10.224.0.0 0.0.255.255 10.0.0.0 0.255.255.255 eq 22
+!
+route-map RM-NEXT-HOP-SELEC deny 10 
+ match source-protocol bgp 65000
+!
+route-map RM-NEXT-HOP-SELEC permit 20 
+ match source-protocol isis
+!
+{% if REDDOMAIN %}
+route-map RM-RING-TAG permit 10 
+ match tag 102
+!
+{% else %}
+route-map RM-RING-TAG permit 10 
+ match tag 1
+!
+{% endif %}
+{% if BLUEDOMAIN %}
+route-map RM-CSR-FROM-AGG permit 10 
+ match community CML-DEVICE
+!
+route-map RM-CSR-FROM-AGG permit 20 
+ match community CML-CITY
+!
+{% else %}
+route-map RM-From_AGG_In permit 10
+ match community CML-DEVICE
+
+route-map RM-From_AGG_In permit 20
+ match community CML-CITY
+
+route-map RM-From_AGG_In permit 30
+ match community NGDC-DEVICE
+{% endif %}
+{% if INTERFACE_TO_AGG1|metric != INTERFACE_TO_AGG2|metric and AGG1_LOOPBACK_MANAGEMENT != AGG2_LOOPBACK_MANAGEMENT %}
+route-map RM-CSR-LOWLP permit 10 
+ set local-preference 50
+ set mpls-label
+!
+{% endif %}
+{% if REGION == '9' and CITY_CODE == '00' %}
+{# must be blue domain #}
+route-map RM-CSR-CML permit 10 
+set community 65000:{{REGION}}0{{AGGREGATION_RING}} 65000:1{{REGION}}100 65000:1{{REGION}}200
+!
+{% else %}
+ {% if BLUEDOMAIN %}
+route-map RM-CSR-CML permit 10 
+ {% else %}
+route-map RM-CSR_CML permit 10 
+ {% endif %}
+ set community 65000:{{REGION}}{{CITY_CODE}}0 65000:1{{REGION}}100 65000:1{{REGION}}200
+!
+{% endif %}
+snmp-server community netview RW 95
+snmp-server community 4TTipbh16 RW 97
+snmp-server community 0SSN3TC00L RW 98
+snmp-server community 3PnM4n4g3R_2017! RW 96
+snmp-server trap-source Loopback1
+snmp-server location {{SNMP_LOCATION}}
+snmp-server ip precedence 1
+snmp-server contact mx.noc.ipbh@mx.att.com
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps license
+snmp-server enable traps bfd
+snmp-server enable traps bgp
+snmp-server enable traps bgp cbgp2
+snmp-server enable traps config-copy
+snmp-server enable traps config
+snmp-server enable traps config-ctid
+snmp-server enable traps event-manager
+snmp-server enable traps isis
+snmp-server enable traps memory bufferpeak
+snmp-server enable traps entity-state
+snmp-server enable traps fru-ctrl
+snmp-server enable traps entity
+snmp-server enable traps cpu threshold
+snmp-server enable traps rep
+snmp-server enable traps cef resource-failure peer-state-change peer-fib-state-change inconsistency
+snmp-server enable traps resource-policy
+snmp-server enable traps flash insertion
+snmp-server enable traps flash removal
+snmp-server enable traps netsync
+snmp-server enable traps aaa_server
+snmp-server enable traps mpls rfc ldp
+snmp-server enable traps mpls ldp
+snmp-server enable traps mpls fast-reroute protected
+snmp-server enable traps pw vc
+snmp-server enable traps alarms informational
+snmp-server enable traps mac-notification
+snmp-server enable traps ethernet cfm alarm
+snmp-server enable traps transceiver all
+snmp-server enable traps mpls vpn
+snmp-server enable traps mpls rfc vpn
+snmp-server host 10.32.209.28 vrf ATT_OAM version 2c 3PnM4n4g3R_2017!
+snmp-server host 10.36.226.108 vrf ATT_OAM version 2c 3PnM4n4g3R_2017!
+snmp ifmib ifindex persist
+control-plane
+banner login #
+------------------------------------------------------------------------------
+                                Warning Notice
+This system is restricted solely to AT&T authorized users for legitimate business
+purposes only. The actual or attempted unauthorized access, use, or modification of
+this system is strictly prohibited by AT&T. Unauthorized users are subject to Company
+disciplinary proceeding and/or criminal and civil penalties under state, federal,
+or other applicable domestic and foreign laws. The use of this system may be monitored
+and recorded for administrative and security reasons. Anyone accessing this system
+expressly consents to such monitoring and is advised that if monitoring reveals possible
+evidence of criminal activity, AT&T may provide the evidence of such activity to law
+enforcement official. All users must comply with AT&T company policies regarding the
+protection of AT&T information assets.
+------------------------------------------------------------------------------
+#
+line con 0
+ exec-timeout 5 0
+ stopbits 1
+line vty 0 4
+ transport input none
+ transport output none
+line vty 5 15
+ access-class 151 in
+ access-class 150 in vrfname ATT_OAM
+ exec-timeout 5 0
+ transport input ssh
+ transport output ssh
+!
+segment-routing mpls
+ !
+{% if BLUEDOMAIN %}
+ set-attributes
+  address-family ipv4
+   sr-label-preferred
+  exit-address-family
+ !
+{% endif %}
+ global-block 16000 31999
+ !
+{% if BLUEDOMAIN %}
+ connected-prefix-sid-map
+  address-family ipv4
+   {{LOOPBACK0}}/32 index {{LOOPBACK0|sid}} range 1 
+  exit-address-family
+ !
+{% endif %}
+exception crashinfo maximum files 2
+ntp access-group peer 2
+{% if NTP_SERVER1 %}
+ntp server {{NTP_SERVER1}} source loopback0 prefer 
+{% else %}
+ {% if AGG1_LOOPBACK_MANAGEMENT is blue %}
+ntp server {{AGG1_LOOPBACK_MANAGEMENT}} source loopback1 prefer
+ {% else %}
+ntp server {{AGG1_LOOPBACK_MANAGEMENT}} source loopback0 prefer
+ {% endif %}
+{% endif %}
+{% if NTP_SERVER2 %}
+ ntp server {{NTP_SERVER2}}
+{% else %}
+ {% if AGG2_LOOPBACK_MANAGEMENT is blue %}
+ntp server {{AGG2_LOOPBACK_MANAGEMENT}} source loopback1
+ {% else %}
+ntp server {{AGG2_LOOPBACK_MANAGEMENT}} source loopback0
+ {% endif %}
+{% endif %}
+!
+event manager policy Mandatory.dualrate_eem_policy.tcl type system authorization bypass
+end
+
